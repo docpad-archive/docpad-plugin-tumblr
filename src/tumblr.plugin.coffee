@@ -16,9 +16,10 @@ module.exports = (BasePlugin) ->
 			apiKey: process.env.TUMBLR_API_KEY
 			relativePath: "tumblr"
 			extension: ".html"
+			helper: null
 
 		# Fetch our Tumblr Posts
-		# next(err,data), data = {tumblrPosts,tumblrTags}
+		# next(err,tumblrPosts)
 		fetchTumblrData: (opts={},next) ->
 			# Prepare
 			config = @getConfig()
@@ -35,7 +36,6 @@ module.exports = (BasePlugin) ->
 			# Prepare
 			tumblrUrl = "http://api.tumblr.com/v2/blog/#{blog}/posts?api_key=#{escape apiKey}"
 			tumblrPosts = []
-			tumblrTags = []
 
 			# Read feeds
 			feedr.readFeed tumblrUrl, (err,feedData) ->
@@ -47,27 +47,20 @@ module.exports = (BasePlugin) ->
 					tumblrPosts.push(tumblrPost)
 
 				# Fetch the remaining posts
-				totalPosts = feedData.response.blog.posts
 				feeds = []
-				for offset in [20...totalPosts] by 20
+				for offset in [20...feedData.response.blog.posts] by 20
 					feeds.push("#{tumblrUrl}&offset=#{offset}")
 				feedr.readFeeds feeds, (err,feedsData) ->
 					# Check
 					return next(err)  if err
 
-					# Concat the posts
+					# Cycle the data
 					for feedData in feedsData
 						for tumblrPost in feedData.response.posts
 							tumblrPosts.push(tumblrPost)
 
-					# Concat the tags
-					for tag in (tumblrPosts.tags or [])
-						unless tag in tumblrTags
-							tumblrTags.push(tag)
-
 					# Done
-					data = {tumblrPosts,tumblrTags}
-					return next(null, data)
+					return next(null, tumblrPosts)
 
 			# Chain
 			@
@@ -80,6 +73,7 @@ module.exports = (BasePlugin) ->
 		# Import Tumblr Data into the Database
 		populateCollections: (opts,next) ->
 			# Prepare
+			me = @
 			config = @getConfig()
 			docpad = @docpad
 			database = docpad.getDatabase()
@@ -89,41 +83,40 @@ module.exports = (BasePlugin) ->
 			docpad.log('info', "Importing Tumblr...")
 
 			# Fetch
-			@fetchTumblrData null, (err,data) ->
+			@fetchTumblrData null, (err,tumblrPosts) ->
 				# Check
 				return next(err)  if err
 
-				# Prepare
-				tasks = new TaskGroup().once('complete', next)
-				{tumblrPosts,tumblrTags} = data
-
 				# Inject our posts
-				eachr tumblrPosts, (tumblrPost) ->  tasks.addTask (complete) ->
+				eachr tumblrPosts, (tumblrPost) ->
 					# Prepare
-					opts = {}
+					documentOpts = {}
 
 					# Meta
-					opts.meta =
+					documentOpts.meta =
+						tumblrId: tumblrPost.id
+						tumblrType: tumblrPost.type
 						tumblr: tumblrPost
 						title: tumblrPost.title or null
 						date: new Date(tumblrPost.date)
+						tags: (tumblrPost.tags or []).push(tumblrPost.type)
 						relativePath: "#{config.relativePath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
 					# Data
-					opts.data = tumblrPost.body or ''  # TODO: should we need the or ''
+					documentOpts.data = tumblrPost.body or ''  # TODO: should we need the or ''
 					delete tumblrPost.body
 
 					# Create document from attributes
-					document = docpad.createDocument(null, opts)
+					document = docpad.createDocument(null, documentOpts)
+
+					# Inject helper
+					config.helper?.call(me, document)
 
 					# Add it to the database
 					database.add(document)
 
-					# Complete
-					return complete()
-
-				# Execute tasks
-				tasks.run()
+				# Complete
+				return next()
 
 			# Chain
 			@

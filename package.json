@@ -23,17 +23,19 @@
 		"url": "https://github.com/docpad/docpad-plugin-tumblr.git"
 	},
 	"engines" : {
-		"node": ">=0.4",
-		"docpad": ">=6.21 <7"
+		"node": ">=0.4"
 	},
 	"dependencies": {
 		"eachr": "~2.0.2",
 		"taskgroup": "~3.1.2",
 		"feedr": "~2.5.0"
 	},
+	"peerDependencies": {
+		"docpad": ">=6.46 <7"
+	},
 	"devDependencies": {
 		"coffee-script": "~1.6.2",
-		"docpad": ">=6.37 <7"
+		"docpad": ">=6.46 <7"
 	},
 	"main": "./out/tumblr.plugin.js",
 	"scripts": {
