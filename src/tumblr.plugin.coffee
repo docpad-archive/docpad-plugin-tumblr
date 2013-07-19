@@ -80,7 +80,7 @@ module.exports = (BasePlugin) ->
 			docpadConfig = docpad.getConfig()
 
 			# Log
-			docpad.log('info', "Importing Tumblr...")
+			docpad.log('info', "Importing Tumblr posts...")
 
 			# Fetch
 			@fetchTumblrData null, (err,tumblrPosts) ->
@@ -99,7 +99,7 @@ module.exports = (BasePlugin) ->
 						tumblr: tumblrPost
 						title: tumblrPost.title or null
 						date: new Date(tumblrPost.date)
-						tags: (tumblrPost.tags or []).push(tumblrPost.type)
+						tags: (tumblrPost.tags or []).concat([tumblrPost.type])
 						relativePath: "#{config.relativePath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
 					# Data
@@ -114,6 +114,9 @@ module.exports = (BasePlugin) ->
 
 					# Add it to the database
 					database.add(document)
+
+				# Log
+				docpad.log('info', "Imported #{tumblrPosts.length} Tumblr posts...")
 
 				# Complete
 				return next()
