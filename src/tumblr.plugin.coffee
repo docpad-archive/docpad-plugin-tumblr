@@ -14,8 +14,8 @@ module.exports = (BasePlugin) ->
 		config:
 			blog: process.env.TUMBLR_BLOG
 			apiKey: process.env.TUMBLR_API_KEY
-			relativePath: "tumblr"
-			extension: ".html"
+			relativeDirPath: "tumblr"
+			extension: ".json"
 			injectDocumentHelper: null
 
 		# Fetch our Tumblr Posts
@@ -91,14 +91,15 @@ module.exports = (BasePlugin) ->
 				eachr tumblrPosts, (tumblrPost) ->
 					# Prepare
 					documentAttributes =
+						data: JSON.stringify(tumblrPost, null, '\t')
 						meta:
 							tumblrId: tumblrPost.id
 							tumblrType: tumblrPost.type
 							tumblr: tumblrPost
-							title: (tumblrPost.title or tumblrPost.track_name or tumblrPost.text or tumblrPost.caption or null).replace(/<(?:.|\n)*?>/gm, '')
+							title: (tumblrPost.title or tumblrPost.track_name or tumblrPost.text or tumblrPost.caption or '').replace(/<(?:.|\n)*?>/gm, '')
 							date: new Date(tumblrPost.date)
 							tags: (tumblrPost.tags or []).concat([tumblrPost.type])
-							relativePath: "#{config.relativePath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
+							relativePath: "#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
 					# Create document from opts
 					document = docpad.createDocument(documentAttributes)

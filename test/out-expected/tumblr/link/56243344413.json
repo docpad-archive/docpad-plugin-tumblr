@@ -1,4 +1,4 @@
-<pre>{
+{
 	"blog_name": "docpadtest",
 	"id": 56243344413,
 	"post_url": "http://docpadtest.tumblr.com/post/56243344413/a-link-title",
@@ -18,4 +18,4 @@
 	"title": "A link title",
 	"url": "http://docpad.org",
 	"description": "<p>A link <em>caption</em></p>"
-}</pre>
+}

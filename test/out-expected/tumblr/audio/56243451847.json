@@ -1,4 +1,4 @@
-<pre>{
+{
 	"blog_name": "docpadtest",
 	"id": 56243451847,
 	"post_url": "http://docpadtest.tumblr.com/post/56243451847/a-song-caption",
@@ -23,4 +23,4 @@
 	"embed": "<iframe src=\"https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F8777393&amp;liking=false&amp;sharing=false&origin=tumblr\" frameborder=\"0\" allowtransparency=\"true\" class=\"soundcloud_audio_player\" width=\"500\" height=\"116\"></iframe>",
 	"plays": 52,
 	"audio_url": "http://www.tumblr.com/audio_file/docpadtest/56243451847/tumblr_mqeaa0vOtV1scnyup"
-}</pre>
+}

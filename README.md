@@ -15,6 +15,69 @@ Import your Tumblr content directly into your DocPad database
 docpad install tumblr
 ```
 
+
+## Configuration
+
+### Specifying your Blog
+
+You need to specify `TUMBLR_BLOG` (e.g. `balupton.tumblr.com`) and your `TUMBLR_KEY` in either your [`.env` configuration file](http://docpad.org/docs/config#environment-configuration-file) like so:
+
+```
+TUMBLR_BLOG=balupton.tumblr.com
+TUMBLR_API_KEY=123
+```
+
+Or via your [docpad configuration file](http://docpad.org/docs/config) via:
+
+``` coffee
+plugins:
+	tumblr:
+		blog: 'balupton.tumblr.com'
+		apiKey: '123'
+```
+
+You can [create a new Tumblr API KEY here](http://www.tumblr.com/oauth/register) or [find your exiting ones here](http://www.tumblr.com/oauth/apps). Your API KEY is the same as your OAuth Consumer Key.
+
+
+### Customising the Output
+
+The default directory for where the imported documents will go inside is the `tumblr` directory. You can customise this using the `relativeDirPath` plugin configuration option.
+
+The default extension for imported documents is `.cson`. You can customise this with the `extension` plugin configuration option.
+
+The default content for the imported documents is the serialised tumblr data as JSON data. You can can customise this with the `injectDocumentHelper` plugin configuration option which is a function that takes in a single [Document Model](https://github.com/bevry/docpad/blob/master/src/lib/models/document.coffee).
+
+If you would like to render a partial for the tumblr data type, add a layout, and change the extension, you can this with the following plugin configuration:
+
+``` coffee
+extension: '.html.eco'
+injectDocumentHelper: (document) ->
+	document.setMeta(
+		layout: 'default'
+		tags: (document.get('tags') or []).concat(['post'])
+		data: """
+			<%- @partial('post/'+@document.tumblr.type, @extend({}, @document, @document.tumblr)) %>
+			"""
+	)
+```
+
+You can find a great example of this customisation within the [syte skeleton](https://github.com/docpad/syte.docpad) which combines the tumblr plugin with the [partials plugin](http://docpad.org/plugin/partials) as well as the [tags plugin](http://docpad.org/plugin/tags) and [paged plugin](http://docpad.org/plugin/paged).
+
+
+### Creating a File Listing
+
+As imported documents are just like normal documents, you can also list them just as you would other documents. Here is an example of a `index.html.eco` file that would output the titles and links to all the imported tumblr documents:
+
+``` erb
+<h2>Tumblr:</h2>
+<ul><% for file in @getFilesAtPath('tumblr/').toJSON(): %>
+	<li>
+		<a href="<%= file.url %>"><%= file.title %></a>
+	</li>
+<% end %></ul>
+```
+
+
 ## History
 [You can discover the history inside the `History.md` file](https://github.com/bevry/docpad-plugin-tumblr/blob/master/History.md#files)
 
