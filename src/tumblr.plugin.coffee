@@ -16,7 +16,7 @@ module.exports = (BasePlugin) ->
 			apiKey: process.env.TUMBLR_API_KEY
 			relativePath: "tumblr"
 			extension: ".html"
-			helper: null
+			injectDocumentHelper: null
 
 		# Fetch our Tumblr Posts
 		# next(err,tumblrPosts)
@@ -90,27 +90,21 @@ module.exports = (BasePlugin) ->
 				# Inject our posts
 				eachr tumblrPosts, (tumblrPost) ->
 					# Prepare
-					documentOpts = {}
+					documentAttributes =
+						meta:
+							tumblrId: tumblrPost.id
+							tumblrType: tumblrPost.type
+							tumblr: tumblrPost
+							title: (tumblrPost.title or tumblrPost.track_name or tumblrPost.text or tumblrPost.caption or null).replace(/<(?:.|\n)*?>/gm, '')
+							date: new Date(tumblrPost.date)
+							tags: (tumblrPost.tags or []).concat([tumblrPost.type])
+							relativePath: "#{config.relativePath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
-					# Meta
-					documentOpts.meta =
-						tumblrId: tumblrPost.id
-						tumblrType: tumblrPost.type
-						tumblr: tumblrPost
-						title: tumblrPost.title or null
-						date: new Date(tumblrPost.date)
-						tags: (tumblrPost.tags or []).concat([tumblrPost.type])
-						relativePath: "#{config.relativePath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
+					# Create document from opts
+					document = docpad.createDocument(documentAttributes)
 
-					# Data
-					documentOpts.data = tumblrPost.body or ''  # TODO: should we need the or ''
-					delete tumblrPost.body
-
-					# Create document from attributes
-					document = docpad.createDocument(null, documentOpts)
-
-					# Inject helper
-					config.helper?.call(me, document)
+					# Inject document helper
+					config.injectDocumentHelper?.call(me, document)
 
 					# Add it to the database
 					database.add(document)

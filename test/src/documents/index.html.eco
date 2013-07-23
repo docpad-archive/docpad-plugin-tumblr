@@ -1,10 +1,11 @@
-<html>
-<head>
-	<title>Test Page</title>
-</head>
-<body>
+---
+title: "Tumblr Listing"
+layout: default
+---
 
-	<pre><%- JSON.stringify @getFilesAtPath('tumblr').toJSON() %></pre>
-
-</body>
-</html>
+<h2>Tumblr:</h2>
+<ul><% for file in @getFilesAtPath('tumblr/').toJSON(): %>
+	<li>
+		<a href="<%= file.url %>"><%= file.title %></a>
+	</li>
+<% end %></ul>
