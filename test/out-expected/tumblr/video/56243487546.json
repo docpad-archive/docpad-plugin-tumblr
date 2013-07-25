@@ -17,6 +17,9 @@
 	"note_count": 0,
 	"caption": "<p>A video caption</p>",
 	"permalink_url": "http://vimeo.com/53755097",
+	"thumbnail_url": "http://b.vimeocdn.com/ts/371/607/371607264_295.jpg",
+	"thumbnail_width": 295,
+	"thumbnail_height": 221,
 	"html5_capable": true,
 	"player": [
 		{
