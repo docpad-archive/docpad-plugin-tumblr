@@ -17,6 +17,29 @@ module.exports = (BasePlugin) ->
 			relativeDirPath: "tumblr"
 			extension: ".json"
 			injectDocumentHelper: null
+			collectionName: "tumblr"
+
+		# =============================
+		# Events
+
+		# Extend Collections
+		# Create our live collection for our tags
+		extendCollections: ->
+			# Prepare
+			config = @getConfig()
+			docpad = @docpad
+			database = docpad.getDatabase()
+
+			# Check
+			if config.collectionName
+				# Create the collection
+				tagsCollection = database.findAllLive({relativeDirPath: $startsWith: config.relativeDirPath}, [title:1])
+
+				# Set the collection
+				docpad.setCollection(config.collectionName, tagsCollection)
+
+			# Chain
+			@
 
 		# Fetch our Tumblr Posts
 		# next(err,tumblrPosts)
@@ -88,7 +111,7 @@ module.exports = (BasePlugin) ->
 				return next(err)  if err
 
 				# Inject our posts
-				eachr tumblrPosts, (tumblrPost) ->
+				eachr tumblrPosts, (tumblrPost,i) ->
 					# Prepare
 					documentAttributes =
 						data: JSON.stringify(tumblrPost, null, '\t')
@@ -101,6 +124,9 @@ module.exports = (BasePlugin) ->
 							tags: (tumblrPost.tags or []).concat([tumblrPost.type])
 							relativePath: "#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
+					# Log
+					docpad.log('debug', "Importing tumblr post #{i}/#{tumblrPosts.length}: #{documentAttributes.meta.relativePath}")
+
 					# Create document from opts
 					document = docpad.createDocument(documentAttributes)
 
@@ -109,6 +135,9 @@ module.exports = (BasePlugin) ->
 
 					# Add it to the database
 					database.add(document)
+
+					# Log
+					docpad.log('debug', "Imported  tumblr post #{i}/#{tumblrPosts.length}: #{document.getFilePath()}")
 
 				# Log
 				docpad.log('info', "Imported #{tumblrPosts.length} Tumblr posts...")

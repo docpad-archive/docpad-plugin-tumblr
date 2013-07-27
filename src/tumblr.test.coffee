@@ -7,6 +7,6 @@ require('docpad').require('testers').test({
 		|
 		[0-9]+\.media\.tumblr\.com
 		|
-		\s+\\"thumbnail.+?,
+		\s+.+?thumbnail.+?,
 		///gm
 })
