@@ -60,16 +60,21 @@ module.exports = (BasePlugin) ->
 			tumblrUrl = "http://api.tumblr.com/v2/blog/#{blog}/posts?api_key=#{escape apiKey}"
 			tumblrPosts = []
 
-			# Read feeds
+			# Fetch the first feed which is the initial page
 			feedr.readFeed tumblrUrl, (err,feedData) ->
 				# Check
 				return next(err)  if err
 
+				# Check the feed's data
+				unless feedData.response?.posts
+					err = new Error("Tumblr post data was empty, here's the result: "+JSON.stringify(feedData))
+					return next(err)
+
 				# Concat the posts
-				for tumblrPost in feedData.response.posts
+				for tumblrPost in (feedData.response.posts or [])
 					tumblrPosts.push(tumblrPost)
 
-				# Fetch the remaining posts
+				# Fetch the remaining pages as their own individual feeds
 				feeds = []
 				for offset in [20...feedData.response.blog.posts] by 20
 					feeds.push("#{tumblrUrl}&offset=#{offset}")
@@ -77,9 +82,15 @@ module.exports = (BasePlugin) ->
 					# Check
 					return next(err)  if err
 
-					# Cycle the data
+					# Cycle each feed
 					for feedData in feedsData
-						for tumblrPost in feedData.response.posts
+						# Check the feed's data
+						unless feedData.response?.posts
+							err = new Error("Tumblr post data was empty, here's the result: "+JSON.stringify(feedData))
+							return next(err)
+
+						# Concat the posts
+						for tumblrPost in (feedData.response.posts or [])
 							tumblrPosts.push(tumblrPost)
 
 					# Done
