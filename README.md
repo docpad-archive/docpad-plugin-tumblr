@@ -1,6 +1,6 @@
 # [Tumblr](https://www.tumblr.com/) Importer Plugin for [DocPad](http://docpad.org)
 
-[![Build Status](https://secure.travis-ci.org/bevry/docpad-plugin-tumblr.png?branch=master)](http://travis-ci.org/bevry/docpad-plugin-tumblr "Check this project's build status on TravisCI")
+[![Build Status](https://secure.travis-ci.org/docpad/docpad-plugin-tumblr.png?branch=master)](http://travis-ci.org/docpad/docpad-plugin-tumblr "Check this project's build status on TravisCI")
 [![NPM version](https://badge.fury.io/js/docpad-plugin-tumblr.png)](https://npmjs.org/package/docpad-plugin-tumblr "View this project on NPM")
 [![Gittip donate button](http://badgr.co/gittip/docpad.png)](https://www.gittip.com/docpad/ "Donate weekly to this project using Gittip")
 [![Flattr donate button](https://raw.github.com/balupton/flattr-buttons/master/badge-89x18.gif)](http://flattr.com/thing/344188/balupton-on-Flattr "Donate monthly to this project using Flattr")
@@ -43,7 +43,7 @@ You can [create a new Tumblr API KEY here](http://www.tumblr.com/oauth/register)
 
 The default directory for where the imported documents will go inside is the `tumblr` directory. You can customise this using the `relativeDirPath` plugin configuration option.
 
-The default extension for imported documents is `.cson`. You can customise this with the `extension` plugin configuration option.
+The default extension for imported documents is `.json`. You can customise this with the `extension` plugin configuration option.
 
 The default content for the imported documents is the serialised tumblr data as JSON data. You can can customise this with the `injectDocumentHelper` plugin configuration option which is a function that takes in a single [Document Model](https://github.com/bevry/docpad/blob/master/src/lib/models/document.coffee).
 
