@@ -1,44 +1,45 @@
 {
-	"name": "docpad-plugin-tumblr",
-	"version": "2.0.2",
-	"description": "Import your Tumblr content directly into your DocPad database",
-	"homepage": "http://docpad.org/plugin/tumblr",
-	"keywords": [
-		"docpad",
-		"docpad-plugin", "docpad-importer",
-		"tumblr", "blog"
-	],
-	"author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
-	"maintainers": [
-		"Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
-	],
-	"contributors": [
-		"Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
-	],
-	"bugs": {
-		"url": "http://docpad.org/plugin/tumblr/issues"
-	},
-	"repository" : {
-		"type": "git",
-		"url": "https://github.com/docpad/docpad-plugin-tumblr.git"
-	},
-	"engines" : {
-		"node": ">=0.4"
-	},
-	"dependencies": {
-		"eachr": "~2.0.2",
-		"taskgroup": "~3.1.2",
-		"feedr": "~2.5.0"
-	},
-	"peerDependencies": {
-		"docpad": ">=6.46 <7"
-	},
-	"devDependencies": {
-		"coffee-script": "~1.6.2",
-		"docpad": ">=6.46 <7"
-	},
-	"main": "./out/tumblr.plugin.js",
-	"scripts": {
-		"test": "node ./out/tumblr.test.js"
-	}
+  "name": "docpad-plugin-tumblr",
+  "version": "2.0.2",
+  "description": "Import your Tumblr content directly into your DocPad database",
+  "homepage": "http://docpad.org/plugin/tumblr",
+  "keywords": [
+    "docpad",
+    "docpad-plugin",
+    "docpad-importer",
+    "tumblr",
+    "blog"
+  ],
+  "author": "Bevry Pty Ltd <us@bevry.me> (http://bevry.me)",
+  "maintainers": [
+    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
+  ],
+  "contributors": [
+    "Benjamin Lupton <b@lupton.cc> (https://github.com/balupton)"
+  ],
+  "bugs": {
+    "url": "http://docpad.org/plugin/tumblr/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/docpad/docpad-plugin-tumblr.git"
+  },
+  "engines": {
+    "node": ">=0.4"
+  },
+  "dependencies": {
+    "eachr": "~2.0.2",
+    "taskgroup": "~3.1.2",
+    "feedr": "~2.5.0"
+  },
+  "peerDependencies": {
+    "docpad": ">=6.46 <7"
+  },
+  "devDependencies": {
+    "coffee-script": "~1.6.2"
+  },
+  "main": "./out/tumblr.plugin.js",
+  "scripts": {
+    "test": "node ./out/tumblr.test.js"
+  }
 }
