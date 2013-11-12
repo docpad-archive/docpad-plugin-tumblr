@@ -5,8 +5,8 @@ require('docpad').require('testers').test({
 	contentRemoveRegex: ///
 		\\"plays\\":\s+[0-9]+,
 		|
-		[0-9]+\.media\.tumblr\.com
+		media\.tumblr\.com.+?
 		|
-		\s+.+?thumbnail.+?,
+		thumbnail.+?
 		///gm
 })

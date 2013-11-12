@@ -1,5 +1,9 @@
 # History
 
+- v2.0.3 November 13, 2013
+	- Better caching of requests
+	- Updated dependencies
+
 - v2.0.2 July 28, 2013
 	- Better debugging when request fails
 

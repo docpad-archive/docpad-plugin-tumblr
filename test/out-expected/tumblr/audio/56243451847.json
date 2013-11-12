@@ -21,6 +21,7 @@
 	"caption": "<p>A song <strong>caption</strong></p>",
 	"player": "<iframe src=\"https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F8777393&amp;liking=false&amp;sharing=false&origin=tumblr\" frameborder=\"0\" allowtransparency=\"true\" class=\"soundcloud_audio_player\" width=\"500\" height=\"116\"></iframe>",
 	"embed": "<iframe src=\"https://w.soundcloud.com/player/?url=http%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F8777393&amp;liking=false&amp;sharing=false&origin=tumblr\" frameborder=\"0\" allowtransparency=\"true\" class=\"soundcloud_audio_player\" width=\"500\" height=\"116\"></iframe>",
-	"plays": 52,
-	"audio_url": "http://www.tumblr.com/audio_file/docpadtest/56243451847/tumblr_mqeaa0vOtV1scnyup"
+	"plays": 0,
+	"audio_url": "http://api.soundcloud.com/tracks/8777393/stream?client_id=3cQaPshpEeLqMsNFAUw1Q",
+	"is_external": true
 }

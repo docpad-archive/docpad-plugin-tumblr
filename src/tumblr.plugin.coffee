@@ -1,7 +1,6 @@
 # Prepare
 {TaskGroup} = require('taskgroup')
 eachr = require('eachr')
-feedr = new (require('feedr').Feedr)
 
 # Export
 module.exports = (BasePlugin) ->
@@ -46,6 +45,7 @@ module.exports = (BasePlugin) ->
 		fetchTumblrData: (opts={},next) ->
 			# Prepare
 			config = @getConfig()
+			feedr = @feedr ?= new (require('feedr').Feedr)
 
 			# Check
 			if !config.blog or !config.apiKey
@@ -61,7 +61,7 @@ module.exports = (BasePlugin) ->
 			tumblrPosts = []
 
 			# Fetch the first feed which is the initial page
-			feedr.readFeed tumblrUrl, (err,feedData) ->
+			feedr.readFeed {url: tumblrUrl, parse: 'json'}, (err,feedData) ->
 				# Check
 				return next(err)  if err
 
