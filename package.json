@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-tumblr",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "description": "Import your Tumblr content directly into your DocPad database",
   "homepage": "http://docpad.org/plugin/tumblr",
   "license": {
@@ -40,7 +40,7 @@
   "dependencies": {
     "eachr": "~2.0.2",
     "taskgroup": "~3.3.1",
-    "feedr": "~2.7.3"
+    "feedr": "~2.7.4"
   },
   "peerDependencies": {
     "docpad": ">=6.46 <7"

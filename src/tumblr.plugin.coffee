@@ -61,7 +61,7 @@ module.exports = (BasePlugin) ->
 			tumblrPosts = []
 
 			# Fetch the first feed which is the initial page
-			feedr.readFeed {url: tumblrUrl, parse: 'json'}, (err,feedData) ->
+			feedr.readFeed tumblrUrl, {parse:'json'}, (err,feedData) ->
 				# Check
 				return next(err)  if err
 
@@ -78,7 +78,7 @@ module.exports = (BasePlugin) ->
 				feeds = []
 				for offset in [20...feedData.response.blog.posts] by 20
 					feeds.push("#{tumblrUrl}&offset=#{offset}")
-				feedr.readFeeds feeds, (err,feedsData) ->
+				feedr.readFeeds feeds, {parse:'json'}, (err,feedsData) ->
 					# Check
 					return next(err)  if err
 

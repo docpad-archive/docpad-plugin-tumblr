@@ -1,5 +1,9 @@
 # History
 
+- v2.0.4 November 13, 2013
+	- Fixed importing multiple pages of tumblr data (regression since v2.0.3)
+	- Updated dependencies
+
 - v2.0.3 November 13, 2013
 	- Better caching of requests
 	- Updated dependencies
