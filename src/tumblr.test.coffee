@@ -2,11 +2,18 @@
 require('docpad').require('testers').test({
 	pluginPath: __dirname+'/..'
 	testerClass: 'RendererTester'
+	removeWhitespace: true
 	contentRemoveRegex: ///
-		\\"plays\\":\s+[0-9]+,
+		# erase play field
+		"plays":\s*[0-9]+,
+
 		|
-		media\.tumblr\.com.+?
+		# erase media field
+		".+?media\.tumblr\.com.+?"
+
 		|
-		thumbnail.+?
+		# erase entire thumbnail line
+		"thumbnail.+?,
+
 		///gm
 })

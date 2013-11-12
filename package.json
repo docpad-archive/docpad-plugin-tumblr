@@ -47,7 +47,7 @@
   },
   "devDependencies": {
     "coffee-script": "~1.6.2",
-    "docpad": ">=6.46 <7",
+    "docpad": ">=6.54.6 <7",
     "projectz": "~0.2.6"
   },
   "main": "./out/tumblr.plugin.js",
