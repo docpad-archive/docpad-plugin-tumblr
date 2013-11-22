@@ -124,6 +124,30 @@ module.exports = (BasePlugin) ->
 				# Inject our posts
 				eachr tumblrPosts, (tumblrPost,i) ->
 					# Prepare
+					document = docpad.getFile({tumblrId: tumblrPost.id})
+
+					# Prepare
+					documentTime = document?.get('mtime') or null
+					tumblrPostTime = new Date(tumblrPost.date)
+
+					# Check
+					if documentTime and documentTime.toString() is tumblrPostTime.toString()
+						# Log
+						docpad.log('debug', "Skipped   tumblr post #{i}/#{tumblrPosts.length}: #{document.getFilePath()}")
+
+						# Skip
+						return
+
+					###
+					console.log """
+					---
+					#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}
+					#{documentTime?.toString() or 'no date'}
+					#{tumblrPostTime.toString()}
+					"""
+					###
+
+					# Prepare
 					documentAttributes =
 						data: JSON.stringify(tumblrPost, null, '\t')
 						meta:
@@ -132,14 +156,21 @@ module.exports = (BasePlugin) ->
 							tumblr: tumblrPost
 							title: (tumblrPost.title or tumblrPost.track_name or tumblrPost.text or tumblrPost.caption or '').replace(/<(?:.|\n)*?>/gm, '')
 							date: new Date(tumblrPost.date)
+							mtime: tumblrPostTime
 							tags: (tumblrPost.tags or []).concat([tumblrPost.type])
 							relativePath: "#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
 					# Log
 					docpad.log('debug', "Importing tumblr post #{i}/#{tumblrPosts.length}: #{documentAttributes.meta.relativePath}")
 
-					# Create document from opts
-					document = docpad.createDocument(documentAttributes)
+					# Existing document
+					if document?
+						document.set(documentAttributes)
+
+					# New Document
+					else
+						# Create document from opts
+						document = docpad.createDocument(documentAttributes)
 
 					# Inject document helper
 					config.injectDocumentHelper?.call(me, document)
