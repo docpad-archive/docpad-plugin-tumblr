@@ -113,6 +113,9 @@ module.exports = (BasePlugin) ->
 			database = docpad.getDatabase()
 			docpadConfig = docpad.getConfig()
 
+			# Imported
+			imported = 0
+
 			# Log
 			docpad.log('info', "Importing Tumblr posts...")
 
@@ -124,39 +127,33 @@ module.exports = (BasePlugin) ->
 				# Inject our posts
 				eachr tumblrPosts, (tumblrPost,i) ->
 					# Prepare
-					document = docpad.getFile({tumblrId: tumblrPost.id})
+					tumblrPostId = parseInt(tumblrPost.id, 10)
+					tumblrPostMtime = new Date(tumblrPost.date)
+					tumblrPostDate = new Date(tumblrPost.date)
 
-					# Prepare
+					# Fetch
+					document = docpad.getFile({tumblrId:tumblrPostId})
 					documentTime = document?.get('mtime') or null
-					tumblrPostTime = new Date(tumblrPost.date)
+					documentTime = new Date(documentTime)  if typeof documentTime is 'string'
 
-					# Check
-					if documentTime and documentTime.toString() is tumblrPostTime.toString()
+					# Compare
+					if documentTime and documentTime.toString() is tumblrPostMtime.toString()
 						# Log
 						docpad.log('debug', "Skipped   tumblr post #{i}/#{tumblrPosts.length}: #{document.getFilePath()}")
 
 						# Skip
 						return
 
-					###
-					console.log """
-					---
-					#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}
-					#{documentTime?.toString() or 'no date'}
-					#{tumblrPostTime.toString()}
-					"""
-					###
-
 					# Prepare
 					documentAttributes =
 						data: JSON.stringify(tumblrPost, null, '\t')
 						meta:
-							tumblrId: tumblrPost.id
+							tumblrId: tumblrPostId
 							tumblrType: tumblrPost.type
 							tumblr: tumblrPost
 							title: (tumblrPost.title or tumblrPost.track_name or tumblrPost.text or tumblrPost.caption or '').replace(/<(?:.|\n)*?>/gm, '')
-							date: new Date(tumblrPost.date)
-							mtime: tumblrPostTime
+							date: tumblrPostDate
+							mtime: tumblrPostMtime
 							tags: (tumblrPost.tags or []).concat([tumblrPost.type])
 							relativePath: "#{config.relativeDirPath}/#{tumblrPost.type}/#{tumblrPost.id}#{config.extension}"
 
@@ -177,12 +174,13 @@ module.exports = (BasePlugin) ->
 
 					# Add it to the database
 					database.add(document)
+					++imported
 
 					# Log
 					docpad.log('debug', "Imported  tumblr post #{i}/#{tumblrPosts.length}: #{document.getFilePath()}")
 
 				# Log
-				docpad.log('info', "Imported #{tumblrPosts.length} Tumblr posts...")
+				docpad.log('info', "Imported #{imported}/#{tumblrPosts.length} Tumblr posts...")
 
 				# Complete
 				return next()
