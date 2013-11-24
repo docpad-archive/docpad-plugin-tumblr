@@ -134,7 +134,6 @@ module.exports = (BasePlugin) ->
 					# Fetch
 					document = docpad.getFile({tumblrId:tumblrPostId})
 					documentTime = document?.get('mtime') or null
-					documentTime = new Date(documentTime)  if typeof documentTime is 'string'
 
 					# Compare
 					if documentTime and documentTime.toString() is tumblrPostMtime.toString()
