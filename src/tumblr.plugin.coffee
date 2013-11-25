@@ -27,12 +27,11 @@ module.exports = (BasePlugin) ->
 			# Prepare
 			config = @getConfig()
 			docpad = @docpad
-			database = docpad.getDatabase()
 
 			# Check
 			if config.collectionName
 				# Create the collection
-				tagsCollection = database.findAllLive({relativeDirPath: $startsWith: config.relativeDirPath}, [title:1])
+				tagsCollection = docpad.getFiles({relativeDirPath: $startsWith: config.relativeDirPath}, [title:1])
 
 				# Set the collection
 				docpad.setCollection(config.collectionName, tagsCollection)
@@ -171,8 +170,8 @@ module.exports = (BasePlugin) ->
 					# Inject document helper
 					config.injectDocumentHelper?.call(me, document)
 
-					# Add it to the database
-					database.add(document)
+					# Add it to the database (with b/c compat)
+					docpad.addModel?(document) or docpad.getDatabase().add(document)
 					++imported
 
 					# Log

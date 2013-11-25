@@ -1,6 +1,6 @@
 {
   "name": "docpad-plugin-tumblr",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Import your Tumblr content directly into your DocPad database",
   "homepage": "http://docpad.org/plugin/tumblr",
   "license": {

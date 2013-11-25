@@ -1,5 +1,9 @@
 # History
 
+- v2.0.5 November 25, 2013
+	- Updated to take advantage of the speed improvements in the next version of DocPad
+	- Updated dependencies
+
 - v2.0.4 November 13, 2013
 	- Fixed importing multiple pages of tumblr data (regression since v2.0.3)
 	- Updated dependencies
