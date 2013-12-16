@@ -1,5 +1,8 @@
 # History
 
+- v2.0.6 December 16, 2013
+	- Compatible with DocPad v6.58
+
 - v2.0.5 November 25, 2013
 	- Updated to take advantage of the speed improvements in the next version of DocPad
 	- Updated dependencies
